@@ -11,24 +11,27 @@ typedef struct Array_ADT
 } array;
 
 // Function Declaration
-void display(array);         // Display
-void append(array *, int);   // Append ie add at last
-int delete (array *, int);   // Deletion
-int l_search(array, int);    // Linear search
-int b_search(array, int);    // Binary search
-int get(array, int);         // Get element at particular index
-void set(array *, int, int); // Replace element at particular index
-int max(array);              // Return max element
-int min(array);              // Return min element
-int sum(array);              // Return sum of all elements of array
-int avg(array);              // Return average of all elements of array
-void reverse_v1(array *);    // Reverse array using another array
-void reverse_v2(array *);    // Reverse array with using another array
-void swap(int *, int *);     // Function to swap
-void left_shift(array *);    // Shifts elements left and terminates 1st element
-void left_rotate(array *);   // shifts elements left and 1st element to last
-void right_shift(array *);   // Shifts elements right and terminates last element
-void right_rotate(array *);  // shifts elements left and last element to 1st
+void display(array);            // Display
+void append(array *, int);      // Append ie add at last
+int delete (array *, int);      // Deletion
+int l_search(array, int);       // Linear search
+int b_search(array, int);       // Binary search
+int get(array, int);            // Get element at particular index
+void set(array *, int, int);    // Replace element at particular index
+int max(array);                 // Return max element
+int min(array);                 // Return min element
+int sum(array);                 // Return sum of all elements of array
+int avg(array);                 // Return average of all elements of array
+void reverse_v1(array *);       // Reverse array using another array
+void reverse_v2(array *);       // Reverse array with using another array
+void swap(int *, int *);        // Function to swap
+void left_shift(array *);       // Shifts elements left and terminates 1st element
+void left_rotate(array *);      // shifts elements left and 1st element to last
+void right_shift(array *);      // Shifts elements right and terminates last element
+void right_rotate(array *);     // shifts elements left and last element to 1st
+void insert_sort(array *, int); // insert in a shorted array
+int check_sort(array);          // cheak if array is sorted
+void negative_on_left(array *); // put all negative element on left side of array
 
 // main
 int main()
@@ -39,7 +42,7 @@ int main()
     {
         printf("\n*****MENU*****");
         printf("\n1.Create\n2.Display\n3.append\n4.delete\n5.search\n6.Get and Set\n7.Some common operation");
-        printf("\n8.Reverse\n9.Shift and Rotate\n10.Exit\nEnter your choice:");
+        printf("\n8.Reverse\n9.Shift and Rotate\n10.Misc\n11.Exit\nEnter your choice: ");
         scanf("%d", &ch);
 
         switch (ch)
@@ -136,13 +139,47 @@ int main()
             p[n - 1](&arr);
         }
         break;
+
         case 10:
+        {
+            int n;
+            printf("1.Insert in sorted array\n2.Check if array is sorted\n3.Arrange negavite element on one side");
+            printf("\nEnter your choice: ");
+            scanf("%d", &n);
+            switch (n)
+            {
+            case 1:
+            {
+                int x;
+                printf("Enter element to be inserted: ");
+                scanf("%d", &x);
+                insert_sort(&arr, x);
+            }
+            break;
+            case 2:
+            {
+                if (check_sort(arr))
+                    printf("\nArray is sorted");
+                else
+                    printf("\nArray is not sorted");
+            }
+            break;
+            case 3:
+            {
+                negative_on_left(&arr);
+            }
+            break;
+            default:
+                printf("\nWrong choice");
+            }
+        }
+        case 11:
             break;
         default:
             printf("Enter correct choice");
         }
 
-    } while (ch != 10);
+    } while (ch != 11);
 
     return 0;
 }
@@ -155,7 +192,7 @@ void display(array arr)
     printf("Elements are- ");
     for (i = 0; i < arr.length; i++)
     {
-        printf("%d ", arr.A[i]);
+        printf("[%d] ", arr.A[i]);
     }
 }
 
@@ -345,4 +382,49 @@ void right_rotate(array *arr)
         arr->A[i] = arr->A[i - 1];
     }
     arr->A[0] = temp;
+}
+
+void insert_sort(array *arr, int x)
+{
+    int i = arr->length - 1;
+    while (arr->A[i] > x && i >= 0)
+    {
+        arr->A[i + 1] = arr->A[i];
+        i--;
+    }
+    arr->A[i + 1] = x;
+    arr->length++;
+}
+
+int check_sort(array arr)
+{
+    int i;
+
+    for (i = 0; i < arr.length - 1; i++)
+    {
+        if (arr.A[i] > arr.A[i + 1])
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+void negative_on_left(array *arr)
+{
+    int i = 0, j = arr->length - 1;
+    while (i < j)
+    {
+        while (arr->A[i] < 0)
+        {
+            i++;
+        }
+        while (arr->A[j] >= 0)
+        {
+            j--;
+        }
+        if (i < j)
+            swap(&arr->A[i], &arr->A[j]);
+    }
 }
